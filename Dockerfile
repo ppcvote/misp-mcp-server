@@ -6,9 +6,10 @@ FROM node:20-alpine AS builder
 
 WORKDIR /app
 
-# Install deps with full dev set for TypeScript build
+# Install deps with full dev set for TypeScript build.
+# --ignore-scripts: the package "prepare" script runs the build, and src is not copied yet.
 COPY package.json package-lock.json* ./
-RUN npm ci --no-audit --no-fund
+RUN npm ci --ignore-scripts --no-audit --no-fund
 
 COPY tsconfig.json ./
 COPY src ./src
@@ -24,7 +25,7 @@ ENV NODE_ENV=production
 
 # Production deps only
 COPY package.json package-lock.json* ./
-RUN npm ci --omit=dev --no-audit --no-fund && npm cache clean --force
+RUN npm ci --omit=dev --ignore-scripts --no-audit --no-fund && npm cache clean --force
 
 COPY --from=builder /app/dist ./dist
 

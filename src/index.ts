@@ -60,7 +60,7 @@ if (!MISP_URL || !MISP_API_KEY) {
   process.stderr.write(
     `[misp-mcp-server] FATAL: MISP_URL and MISP_API_KEY environment variables are required.\n` +
       `  Set them in your MCP client config or shell environment.\n` +
-      `  See: https://github.com/ppcvote/misp-mcp-server#configuration\n`,
+      `  See: https://github.com/ppcvote/misp-mcp-server#environment-variables\n`,
   )
   process.exit(1)
 }
