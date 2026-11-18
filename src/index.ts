@@ -22,7 +22,7 @@
  *     "mcpServers": {
  *       "misp": {
  *         "command": "npx",
- *         "args": ["-y", "@ultralab/misp-mcp-server"],
+ *         "args": ["-y", "github:ppcvote/misp-mcp-server"],
  *         "env": {
  *           "MISP_URL": "https://misp.your-org.example",
  *           "MISP_API_KEY": "your_key"

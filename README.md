@@ -1,6 +1,5 @@
 # MISP MCP Server
 
-[![npm version](https://img.shields.io/npm/v/@ultralab/misp-mcp-server.svg)](https://www.npmjs.com/package/@ultralab/misp-mcp-server)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![MCP](https://img.shields.io/badge/Model%20Context%20Protocol-1.0-blue)](https://modelcontextprotocol.io)
 
@@ -30,24 +29,32 @@ Tracks: [MISP/MISP#10745 — MCP server for MISP](https://github.com/MISP/MISP/i
 
 ## Quick start
 
+> **Not on npm yet.** The package is not published to the npm registry, so `npm install -g @ultralab/misp-mcp-server` will not work. Install from GitHub with one of the two options below. Both need Node.js 20 or newer.
+
 ### 1. Install
 
-```bash
-npm install -g @ultralab/misp-mcp-server
-```
+**Option A: run straight from GitHub with `npx` (no clone).** Needs `git` on your PATH. npm fetches the repo, builds it, and caches the result, so the first start takes longer (about 15 seconds on our machine) and later starts are fast. Nothing to do in this step; go to step 2.
 
-Or use `npx` directly in your MCP client config (no install needed).
+**Option B: clone and build.** Best if your MCP client has a short startup timeout, or you want to pin or read the code first.
+
+```bash
+git clone https://github.com/ppcvote/misp-mcp-server.git
+cd misp-mcp-server
+npm install        # also builds dist/ through the prepare script
+```
 
 ### 2. Configure your MCP client
 
-**Claude Desktop** (`~/Library/Application Support/Claude/claude_desktop_config.json` on macOS, `%APPDATA%/Claude/claude_desktop_config.json` on Windows):
+**Claude Desktop** (`~/Library/Application Support/Claude/claude_desktop_config.json` on macOS, `%APPDATA%/Claude/claude_desktop_config.json` on Windows).
+
+Option A:
 
 ```json
 {
   "mcpServers": {
     "misp": {
       "command": "npx",
-      "args": ["-y", "@ultralab/misp-mcp-server"],
+      "args": ["-y", "github:ppcvote/misp-mcp-server"],
       "env": {
         "MISP_URL": "https://misp.your-org.example",
         "MISP_API_KEY": "your_misp_api_key_here"
@@ -56,6 +63,25 @@ Or use `npx` directly in your MCP client config (no install needed).
   }
 }
 ```
+
+Option B (use the absolute path of your clone):
+
+```json
+{
+  "mcpServers": {
+    "misp": {
+      "command": "node",
+      "args": ["/absolute/path/to/misp-mcp-server/dist/index.js"],
+      "env": {
+        "MISP_URL": "https://misp.your-org.example",
+        "MISP_API_KEY": "your_misp_api_key_here"
+      }
+    }
+  }
+}
+```
+
+To pin Option A to a fixed version, append a commit: `github:ppcvote/misp-mcp-server#<commit-sha>`.
 
 **Cursor / Continue / Cline** — similar pattern, see your client's MCP config docs.
 
@@ -143,7 +169,7 @@ For deployments that need:
 ```bash
 git clone https://github.com/ppcvote/misp-mcp-server.git
 cd misp-mcp-server
-npm install
+npm install         # installs and builds dist/
 npm test            # smoke tests, no live MISP
 npm run dev         # tsx watch mode
 npm run build       # produce dist/
@@ -155,7 +181,7 @@ npm run build       # produce dist/
 LLM client (Claude Desktop, Cursor, etc.)
     │ stdio
     ▼
-@ultralab/misp-mcp-server
+misp-mcp-server
     │
     ├─ src/tools.ts       — 8 read-only tool definitions + dispatch
     ├─ src/misp-client.ts — minimal MISP REST API wrapper
